@@ -395,6 +395,9 @@ rm -rf cmake-build
 mkdir cmake-build
 cd cmake-build
 
+echo "using cmake in: $(which cmake)"
+cmake --version
+
 doit cmake .. -G "Unix Makefiles" -DCMAKE_PREFIX_PATH="$STAGING" \
     -DCAPNPC_FLAGS=--no-standard-import -DCAPNPC_IMPORT_DIRS="$STAGING/include"
 doit make -j$PARALLEL
