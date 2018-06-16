@@ -191,6 +191,21 @@ KJ_TEST("string literals with _kj suffix") {
   KJ_EXPECT(kj::str(ARR) == "foo");
 }
 
+KJ_TEST("parsing 'nan' returns canonical NaN value") {
+  // There are many representations of NaN. We would prefer that parsing "NaN" produces exactly the
+  // same bits that kj::nan() returns.
+  {
+    double parsedNan = StringPtr("NaN").parseAs<double>();
+    double canonicalNan = kj::nan();
+    KJ_EXPECT(memcmp(&parsedNan, &canonicalNan, sizeof(parsedNan)) == 0);
+  }
+  {
+    float parsedNan = StringPtr("NaN").parseAs<float>();
+    float canonicalNan = kj::nan();
+    KJ_EXPECT(memcmp(&parsedNan, &canonicalNan, sizeof(parsedNan)) == 0);
+  }
+}
+
 }  // namespace
 }  // namespace _ (private)
 }  // namespace kj
